@@ -1,0 +1,22 @@
+name: simple-page-monitor
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"  # every 6 hours (UTC)
+  workflow_dispatch:        # lets you run it manually from the Actions tab
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: simple-page-monitor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python page-monitor.py
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
