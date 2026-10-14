@@ -1,5 +1,9 @@
 name: simple-page-monitor
-
+permissions:
+  contents: write
+concurrency:
+  group: simple-page-monitor
+  cancel-in-progress: false
 on:
   schedule:
     - cron: "0 */6 * * *"  # every 6 hours (UTC)
@@ -20,3 +24,22 @@ jobs:
       - run: python page-monitor.py
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      - name: Commit updated state
+        if: always()
+        run: |
+          if [ ! -f state.json ]; then
+            echo "No state.json yet, nothing to commit"
+            exit 0
+          fi
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update page-monitor state"
+            git pull --rebase origin "$GITHUB_REF_NAME"
+            git push
+          else
+            echo "No changes to commit"
+          fi

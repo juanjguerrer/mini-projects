@@ -38,9 +38,9 @@ pages:
 |------------------|---------------------------------------------------|---------------|
 | `marker_absent`  | the marker text is **no longer** on the page      | working       |
 | `marker_present` | the marker text **appears** on the page           | working       |
-| `changed`        | the page content changed since the last check     | not implemented yet |
+| `changed`        | the page content changed since the last check     | working       |
 
-> Don't use `changed` yet: it is a placeholder that always reports a change.
+> The first time a `changed` page is checked it only stores its hash in `state.json`; you get notified from the next change on.
 
 The `examples` block in `config.yaml` is only documentation and is ignored by the script.
 
@@ -111,3 +111,4 @@ gh workflow disable simple-page-monitor.yml
 - **Errors:** connection errors are printed as `Error fetching page: ...` and treated as "not ready yet".
 - **Repeated alerts:** once a page meets its condition, you will be notified on every run until you disable the workflow or change the config.
 - **JavaScript-rendered pages:** `requests` only sees the raw HTML. If the marker is injected by JavaScript, this approach won't detect it.
+- **State file:** `changed` pages keep their last hash in `state.json`, which the workflow commits back to the repo. After the bot commits, run `git pull` before your next `git push`, or Git will reject the push because your local copy is behind.
