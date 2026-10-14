@@ -4,6 +4,7 @@ pages:
     url: https://siurp.sep.gob.mx
     check_type: marker_absent
     marker: "estamos trabajando para mejorar nuestro servicio"
+    message: "The maintenance message is gone, the page is available."
 
 # Examples of pages
 examples:
