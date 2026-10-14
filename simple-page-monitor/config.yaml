@@ -1,0 +1,20 @@
+version: 1.0.0
+pages:
+  - name: SIURP SEP
+    url: https://siurp.sep.gob.mx
+    check_type: marker_absent
+    marker: "estamos trabajando para mejorar nuestro servicio"
+
+# Examples of pages
+examples:
+  - name: Example Page
+    url: https://example.com
+    check_type: marker_absent
+    marker: "This is a marker text that should not be present on the page."
+  - name: Page 2
+    url: https://example2.com
+    check_type: marker_present
+    marker: "This is a marker text that should be present on the page."
+  - name: Another Page
+    url: https://anotherexample.com
+    check_type: changed
